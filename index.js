@@ -1,12 +1,17 @@
 var http = require('http'),
     moment = require('moment-timezone'),
     
-    juvenes = require('./parsers/juvenes.js');
+    juvenes = require('./parsers/juvenes.js'),
+    sodexo = require('./parsers/sodexo.js');
 
 var today = moment(new Date()).tz('Europe/Helsinki');
 
 
 juvenes.getMenus(today, function(menus) {
+    console.log(menus);
+});
+
+sodexo.getMenus(today, function(menus) {
     console.log(menus);
 });
 
