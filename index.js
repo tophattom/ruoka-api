@@ -1,5 +1,7 @@
 var http = require('http'),
     moment = require('moment-timezone'),
+    express = require('express'),
+    async = require('async'),
     
     juvenes = require('./parsers/juvenes.js'),
     sodexo = require('./parsers/sodexo.js');
@@ -7,10 +9,29 @@ var http = require('http'),
 var today = moment(new Date()).tz('Europe/Helsinki');
 
 
-juvenes.getMenus(today, function(menus) {
-    console.log(menus[1].meals[0]);
+var app = express();
+
+app.get('/:date', function(req, res, next) {
+    var date = moment(req.params.date, 'YYYY-MM-DD').tz('Europe/Helsinki');
+    
+    async.parallel([
+        function(callback) {
+            juvenes.getMenus(date, function(menus) {
+                callback(null, menus);
+            });
+        },
+        function(callback) {
+            sodexo.getMenus(date, function(menus) {
+                callback(null, menus);
+            })
+        }
+    ], function(err, result) {
+        result = result.reduce(function(prev, current) {
+            return prev.concat(current);
+        }, []);
+        
+        res.status(200).send(result);
+    });
 });
 
-sodexo.getMenus(today, function(menus) {
-    console.log(menus[0].meals[1]);
-});
+app.listen(8080);
