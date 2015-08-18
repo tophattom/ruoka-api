@@ -8,11 +8,11 @@ var today = moment(new Date()).tz('Europe/Helsinki');
 
 
 juvenes.getMenus(today, function(menus) {
-    console.log(menus);
+    console.log(menus[1].meals[0]);
 });
 
 sodexo.getMenus(today, function(menus) {
-    console.log(menus);
+    console.log(menus[0].meals[1]);
 });
 
 

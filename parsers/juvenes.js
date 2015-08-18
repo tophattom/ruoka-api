@@ -84,7 +84,12 @@ function normalizeMenu(menu) {
             return {
                 name: mealOption.Name,
                 contents: mealOption.ForceMajeure.split('<br/>'),
-                info: mealOption.MenuItems
+                info: mealOption.MenuItems.map(function(item) {
+                    return {
+                        diets: item.Diets.split(','),
+                        name: item.name
+                    };
+                })
             };
         })
     };

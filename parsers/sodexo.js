@@ -24,7 +24,13 @@ exports.getMenus = function(date, callback) {
                 meals: data.courses.map(function(course) {
                     return {
                         name: course.category,
-                        contents: [course.title_fi, course.desc_fi]
+                        contents: [course.title_fi, course.desc_fi],
+                        info: [
+                            {
+                                diets: course.properties.split(','),
+                                name: course.title_fi
+                            }
+                        ]
                     };
                 })
             }
