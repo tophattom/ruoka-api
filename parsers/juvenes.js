@@ -24,13 +24,9 @@ var baseUrl = 'http://www.juvenes.fi/DesktopModules/Talents.LunchMenu/LunchMenuS
 
 exports.getMenus = function(date, callback) {
     var week = date.week(),
-        day = date.day() + 1;
+        day = date.day();
         
     var menus = [];
-    
-    restaurants.forEach(function(restaurant) {
-        
-    });
     
     async.each(restaurants, function(restaurant, done) {
         var options = {
@@ -72,6 +68,24 @@ exports.getMenus = function(date, callback) {
             return;
         }
         
+        menus = menus.map(function(menu) {
+            return normalizeMenu(menu);
+        });
+        
         callback(menus);
     });
 };
+
+function normalizeMenu(menu) {
+    return {
+        restaurant: menu.KitchenName,
+        name: menu.MenuTypeName,
+        meals: menu.MealOptions.map(function(mealOption) {
+            return {
+                name: mealOption.Name,
+                contents: mealOption.ForceMajeure.split('<br/>'),
+                info: mealOption.MenuItems
+            };
+        })
+    };
+}

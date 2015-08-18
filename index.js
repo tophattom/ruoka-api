@@ -5,7 +5,10 @@ var http = require('http'),
 
 var today = moment(new Date()).tz('Europe/Helsinki');
 
-juvenes.getMenu(today);
+
+juvenes.getMenus(today, function(menus) {
+    console.log(menus);
+});
 
 
 var result = '';
