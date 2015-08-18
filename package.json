@@ -1,0 +1,15 @@
+{
+  "name": "ruoka",
+  "version": "1.0.0",
+  "description": "TTY:n ruokalistat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jaakko Rinta-Filppula",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^1.4.2",
+    "moment-timezone": "^0.4.0"
+  }
+}
