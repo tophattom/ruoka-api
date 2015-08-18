@@ -27,7 +27,7 @@ exports.getMenus = function(date, callback) {
                         contents: [course.title_fi, course.desc_fi],
                         info: [
                             {
-                                diets: course.properties.split(','),
+                                diets: typeof course.properties !== 'undefined' ? course.properties.split(',') : [],
                                 name: course.title_fi
                             }
                         ]
