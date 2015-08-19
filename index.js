@@ -24,7 +24,7 @@ app.get('/:date', function(req, res, next) {
         function(callback) {
             sodexo.getMenus(date, function(menus) {
                 callback(null, menus);
-            })
+            });
         }
     ], function(err, result) {
         result = result.reduce(function(prev, current) {
