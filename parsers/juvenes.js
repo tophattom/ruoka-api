@@ -86,11 +86,13 @@ function normalizeMenu(menu) {
         meals: menu.MealOptions.map(function(mealOption) {
             return {
                 name: mealOption.Name,
-                contents: mealOption.ForceMajeure.split('<br/>'),
+                contents: mealOption.MenuItems.map(function(item) {
+                    return item.Name;
+                }),
                 info: mealOption.MenuItems.map(function(item) {
                     return {
                         diets: item.Diets.split(','),
-                        name: item.name
+                        name: item.Name
                     };
                 })
             };
