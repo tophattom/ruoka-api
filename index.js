@@ -41,11 +41,13 @@ app.get('/:date', function(req, res, next) {
             });
         }
     ], function(err, result) {
-        result = result.reduce(function(prev, current) {
+        var menus = result.reduce(function(prev, current) {
             return prev.concat(current);
         }, []);
         
-        res.status(200).send(result);
+        res.status(200).send({
+            menus: menus
+        });
     });
 });
 
