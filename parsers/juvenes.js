@@ -53,8 +53,11 @@ exports.getMenus = function(date, callback) {
         req.on('close', function() {
             result = result.slice(1).slice(0, -2);
             
-            var menu = JSON.parse(JSON.parse(result).d);
-            menus.push(menu);
+            var resultObj = JSON.parse(result);
+            if (resultObj.d) {
+                var menu = JSON.parse(resultObj.d);
+                menus.push(menu);
+            }
             
             done();
         });
