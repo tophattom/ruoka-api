@@ -4,16 +4,17 @@ var http = require('http'),
     async = require('async'),
     
     juvenes = require('./parsers/juvenes.js'),
-    sodexo = require('./parsers/sodexo.js');
+    sodexo = require('./parsers/sodexo.js'),
+    
+    config = require('./config.js');
 
-var today = moment(new Date()).tz('Europe/Helsinki');
 
 
 var app = express();
 
 app.get('/:date', function(req, res, next) {
     var date = moment(req.params.date, 'YYYY-MM-DD').tz('Europe/Helsinki');
-    
+        
     async.parallel([
         function(callback) {
             juvenes.getMenus(date, function(menus) {
@@ -34,4 +35,5 @@ app.get('/:date', function(req, res, next) {
     });
 });
 
-app.listen(8080);
+app.listen(config.app.port);
+console.log('Server listening on port', config.app.port);
