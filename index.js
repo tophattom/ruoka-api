@@ -12,6 +12,20 @@ var http = require('http'),
 
 var app = express();
 
+app.use(function(req, res, next) {
+    res.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET'
+    });
+    
+    
+    if (req.method === 'OPTIONS') {
+        res.status(200).send();
+    } else {
+        next();
+    }
+});
+
 app.get('/:date', function(req, res, next) {
     var date = moment(req.params.date, 'YYYY-MM-DD').tz('Europe/Helsinki');
         
