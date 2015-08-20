@@ -26,6 +26,10 @@ exports.getMenus = function(date, callback) {
     var week = date.week(),
         day = date.day();
         
+    if (day === 0) {
+        day = 7;
+    }
+        
     var menus = [];
     
     async.each(restaurants, function(restaurant, done) {
