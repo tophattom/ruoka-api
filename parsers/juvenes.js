@@ -91,12 +91,12 @@ function normalizeMenu(menu) {
             return {
                 name: mealOption.Name,
                 contents: mealOption.MenuItems.map(function(item) {
-                    return item.Name;
-                }),
-                info: mealOption.MenuItems.map(function(item) {
                     return {
-                        diets: item.Diets.split(','),
-                        name: item.Name
+                        name: item.Name,
+                        diets: item.Diets.split(',').map(function(diet) {
+                            return diet.trim();
+                        }),
+                        ingredients: item.Ingredients
                     };
                 })
             };

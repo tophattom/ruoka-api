@@ -24,11 +24,16 @@ exports.getMenus = function(date, callback) {
                 meals: data.courses.map(function(course) {
                     return {
                         name: course.category,
-                        contents: [course.title_fi, course.desc_fi],
-                        info: [
+                        contents: [
                             {
-                                diets: typeof course.properties !== 'undefined' ? course.properties.split(',') : [],
-                                name: course.title_fi
+                                name: course.title_fi,
+                                diets: typeof course.properties !== 'undefined' ? 
+                                    course.properties.split(',').map(function(diet) {
+                                        return diet.trim();
+                                    }) : []
+                            },
+                            {
+                                name: course.desc_fi
                             }
                         ]
                     };
