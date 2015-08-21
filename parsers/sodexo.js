@@ -3,7 +3,7 @@ var http = require('http');
 var baseUrl = 'http://www.sodexo.fi/ruokalistat/output/daily_json/12812/';
 
 exports.getMenus = function(date, callback) {
-    var urlDate = date.format('YYYY/MM/DD')
+    var urlDate = date.format('YYYY/MM/DD'),
         requestUrl = baseUrl + urlDate + '/fi',
         
         result = '';
