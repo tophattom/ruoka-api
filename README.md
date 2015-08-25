@@ -15,15 +15,25 @@ GET http://api.ruoka.xyz/YYYY-MM-DD
                 {
                     "name": "Popular",
                     "contents": [
-                        "Chili con carne",
-                        "Täysjyväriisiä"
+                        {
+                            "name": "Chili con carne",
+                            "diets": ["G", "L"]
+                        },
+                        {
+                            "name": "Täysjyväriisiä"
+                        }
                     ]
                 },
                 {
                     "name": "Inspiring",
                     "contents": [
-                        "Kalaa capers",
-                        "Seitä, kaprista, chiliä, ja sitruunaa, täyjyväohraa"
+                        {
+                            "name": "Kalaa capers",
+                            "diets": ["M"]
+                        },
+                        {
+                            "name": "Seitä, kaprista, chiliä, ja sitruunaa, täyjyväohraa"
+                        }
                     ]
                 },
                 ...
