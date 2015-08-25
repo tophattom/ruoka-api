@@ -43,7 +43,10 @@ app.get('/:date', function(req, res, next) {
     ], function(err, result) {
         var menus = result.reduce(function(prev, current) {
             return prev.concat(current);
-        }, []);
+        }, [])
+        .sort(function(a, b) {
+            return (a.restaurant + a.name) < (b.restaurant + b.name) ? -1 : 1;
+        });
         
         res.status(200).send({
             menus: menus
