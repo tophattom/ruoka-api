@@ -7,33 +7,39 @@ GET http://api.ruoka.xyz/YYYY-MM-DD
 
 ```` json
 {
-    "menus": [
+    "restaurants": [
         {
-            "restaurant": "Hertsi",
-            "name": "Lounas",
-            "meals": [
+            "name": "Hertsi",
+            "menus": [
                 {
-                    "name": "Popular",
-                    "contents": [
+                    "restaurant": "Hertsi",
+                    "name": "Lounas",
+                    "meals": [
                         {
-                            "name": "Chili con carne",
-                            "diets": ["G", "L"]
+                            "name": "Popular",
+                            "contents": [
+                                {
+                                    "name": "Chili con carne",
+                                    "diets": ["G", "L"]
+                                },
+                                {
+                                    "name": "Täysjyväriisiä"
+                                }
+                            ]
                         },
                         {
-                            "name": "Täysjyväriisiä"
-                        }
-                    ]
-                },
-                {
-                    "name": "Inspiring",
-                    "contents": [
-                        {
-                            "name": "Kalaa capers",
-                            "diets": ["M"]
+                            "name": "Inspiring",
+                            "contents": [
+                                {
+                                    "name": "Kalaa capers",
+                                    "diets": ["M"]
+                                },
+                                {
+                                    "name": "Seitä, kaprista, chiliä, ja sitruunaa, täyjyväohraa"
+                                }
+                            ]
                         },
-                        {
-                            "name": "Seitä, kaprista, chiliä, ja sitruunaa, täyjyväohraa"
-                        }
+                        ...
                     ]
                 },
                 ...

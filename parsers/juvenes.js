@@ -143,7 +143,24 @@ exports.getMenus = function(date, callback) {
             return normalizeMenu(menu);
         });
         
-        callback(menus);
+        var obj = {};
+        menus.forEach(function(menu) {
+            if (!obj[menu.restaurant]) {
+                obj[menu.restaurant] = {};
+                obj[menu.restaurant].menus = [];
+            }
+            
+            obj[menu.restaurant].menus.push(menu);
+        });
+        
+        var restaurantList = Object.keys(obj).map(function(restaurantName) {
+            return {
+                name: restaurantName,
+                menus: obj[restaurantName].menus
+            };
+        });
+        
+        callback(restaurantList);
     });
 };
 

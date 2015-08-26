@@ -41,7 +41,7 @@ app.get('/:date', function(req, res, next) {
             });
         }
     ], function(err, result) {
-        var menus = result.reduce(function(prev, current) {
+        var restaurants = result.reduce(function(prev, current) {
             return prev.concat(current);
         }, [])
         .sort(function(a, b) {
@@ -49,7 +49,7 @@ app.get('/:date', function(req, res, next) {
         });
         
         res.status(200).send({
-            menus: menus
+            restaurants: restaurants
         });
     });
 });
