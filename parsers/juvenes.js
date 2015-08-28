@@ -171,15 +171,19 @@ function normalizeMenu(menu) {
         meals: menu.MealOptions.map(function(mealOption) {
             return {
                 name: mealOption.Name,
-                contents: mealOption.MenuItems.map(function(item) {
-                    return {
-                        name: item.Name,
-                        diets: item.Diets.split(',').map(function(diet) {
-                            return diet.trim();
-                        }),
-                        ingredients: item.Ingredients
-                    };
-                })
+                contents: mealOption.MenuItems
+                    .filter(function(item) {
+                        return item.Name !== '';
+                    })
+                    .map(function(item) {
+                        return {
+                            name: item.Name,
+                            diets: item.Diets.split(',').map(function(diet) {
+                                return diet.trim();
+                            }),
+                            ingredients: item.Ingredients
+                        };
+                    })
             };
         })
     };
