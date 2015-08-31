@@ -1,14 +1,22 @@
 var http = require('http'),
     moment = require('moment-timezone');
 
-var url = 'http://www.amica.fi/modules/json/json/Index?costNumber=0812&language=fi',
-
-    contentExp = /(.+?) \((.+)\)/;
-
+var baseUrl = 'http://www.amica.fi/api/restaurant/menu/day?';
+    
 exports.getMenus = function(date, callback) {
+    var options = {
+        date: date.format('YYYY-MM-DD'),
+        language: 'fi',
+        restaurantPageId: 69171
+    };
+    
+    var queryString = Object.keys(options).map(function(key) {
+        return key + '=' + options[key];
+    }).join('&');
+    
     var result = '';
     
-    var req = http.get(url, function(res) {
+    var req = http.get(baseUrl + queryString, function(res) {
         res.on('data', function(data) {
             result += data.toString();
         });
@@ -19,32 +27,27 @@ exports.getMenus = function(date, callback) {
         
         var restaurants = [
             {
-                name: data.RestaurantName,
+                name: 'Reaktori',
                 menus: [
                     {
                         name: 'Lounas',
-                        meals: data.MenusForDays.find(item => {
-                                return moment(item.Date).format('YYYY-MM-DD') === date.format('YYYY-MM-DD');
-                            })
-                            .SetMenus.map(item => {
-                                return {
-                                    name: item.Name,
-                                    contents: item.Components.map(component => {
-                                            var parts = component.match(contentExp);
-                                            
-                                            return {
-                                                name: parts[1],
-                                                diets: parts[2].split(',').map(diet => { return diet.trim(); })
-                                            };
-                                        })
-                                };
-                            })
+                        meals: data.LunchMenu.SetMenus.map(function(setMenu) {
+                            return {
+                                name: setMenu.Name,
+                                contents: setMenu.Meals.map(function(content) {
+                                    return {
+                                        name: content.Name,
+                                        diets: content.Diets
+                                    };
+                                })
+                            };
+                        })
                     }
                 ]
             }
         ];
         
-        return callback(restaurants);
+        callback(restaurants);
     });
     
     req.on('error', function(err) {
