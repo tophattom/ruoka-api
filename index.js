@@ -5,9 +5,9 @@ var http = require('http'),
     
     juvenes = require('./parsers/juvenes.js'),
     sodexo = require('./parsers/sodexo.js'),
+    fazer = require('./parsers/fazer.js'),
     
     config = require('./config.js');
-
 
 
 var app = express();
@@ -37,6 +37,11 @@ app.get('/:date', function(req, res, next) {
         },
         function(callback) {
             sodexo.getMenus(date, function(menus) {
+                callback(null, menus);
+            });
+        },
+        function(callback) {
+            fazer.getMenus(date, function(menus) {
                 callback(null, menus);
             });
         }
