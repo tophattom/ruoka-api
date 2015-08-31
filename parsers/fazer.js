@@ -35,7 +35,7 @@ exports.getMenus = function(date, callback) {
                             return {
                                 name: setMenu.Name,
                                 prices: setMenu.Price.split('/').map(function(price) {
-                                    return price.trim();
+                                    return price.replace('€', '').trim();
                                 }),
                                 contents: setMenu.Meals.map(function(content) {
                                     return {
