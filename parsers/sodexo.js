@@ -24,6 +24,9 @@ exports.getMenus = function(date, callback) {
                 meals: data.courses.map(function(course) {
                     return {
                         name: course.category,
+                        prices: course.price.split('/').map(function(price) {
+                            return price.trim();
+                        }),
                         contents: [
                             {
                                 name: course.title_fi,
