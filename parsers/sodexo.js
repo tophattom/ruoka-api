@@ -38,7 +38,9 @@ exports.getMenus = function(date, callback) {
                             {
                                 name: course.desc_fi
                             }
-                        ]
+                        ].filter(function(content) {
+                            return content.name !== '';
+                        })
                     };
                 })
             }
