@@ -15,58 +15,63 @@ exports.getMenus = function(date, callback) {
     });
     
     req.on('close', function() {
-        var data = JSON.parse(result);
-        
-        var menus = [
-            {
-                restaurant: 'Hertsi',
-                name: 'Lounas',
-                meals: data.courses.map(function(course) {
-                    return {
-                        name: course.category,
-                        prices: course.price.split('/').map(function(price) {
-                            return price.trim();
-                        }),
-                        contents: [
-                            {
-                                name: course.title_fi,
-                                diets: typeof course.properties !== 'undefined' ? 
-                                    course.properties.split(',').map(function(diet) {
-                                        return diet.trim();
-                                    }) : []
-                            },
-                            {
-                                name: course.desc_fi
-                            }
-                        ].filter(function(content) {
-                            return content.name !== '';
-                        })
-                    };
-                })
-            }
-        ];
-        
-        var obj = {};
-        menus.forEach(function(menu) {
-            if (!obj[menu.restaurant]) {
-                obj[menu.restaurant] = {};
-                obj[menu.restaurant].menus = [];
-            }
+        try {
+            var data = JSON.parse(result);
             
-            obj[menu.restaurant].menus.push(menu);
-        });
+            var menus = [
+                {
+                    restaurant: 'Hertsi',
+                    name: 'Lounas',
+                    meals: data.courses.map(function(course) {
+                        return {
+                            name: course.category,
+                            prices: course.price.split('/').map(function(price) {
+                                return price.trim();
+                            }),
+                            contents: [
+                                {
+                                    name: course.title_fi,
+                                    diets: typeof course.properties !== 'undefined' ? 
+                                        course.properties.split(',').map(function(diet) {
+                                            return diet.trim();
+                                        }) : []
+                                },
+                                {
+                                    name: course.desc_fi
+                                }
+                            ].filter(function(content) {
+                                return content.name !== '';
+                            })
+                        };
+                    })
+                }
+            ];
+            
+            var obj = {};
+            menus.forEach(function(menu) {
+                if (!obj[menu.restaurant]) {
+                    obj[menu.restaurant] = {};
+                    obj[menu.restaurant].menus = [];
+                }
+                
+                obj[menu.restaurant].menus.push(menu);
+            });
+            
+            var restaurantList = Object.keys(obj).map(function(restaurantName) {
+                return {
+                    name: restaurantName,
+                    menus: obj[restaurantName].menus
+                };
+            });
+            
+            callback(null, restaurantList);
+        } catch(e) {
+            callback(e);
+        }
         
-        var restaurantList = Object.keys(obj).map(function(restaurantName) {
-            return {
-                name: restaurantName,
-                menus: obj[restaurantName].menus
-            };
-        });
-        
-        callback(restaurantList);
     });
     
     req.on('error', function(err) {
-        console.error(err);
+        callback(e);
     });
 };

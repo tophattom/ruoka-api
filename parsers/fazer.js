@@ -23,34 +23,38 @@ exports.getMenus = function(date, callback) {
     });
     
     req.on('close', function() {
-        var data = JSON.parse(result);
-        
-        var restaurants = [
-            {
-                name: 'Reaktori',
-                menus: [
-                    {
-                        name: 'Lounas',
-                        meals: data.LunchMenu.SetMenus.map(function(setMenu) {
-                            return {
-                                name: setMenu.Name,
-                                prices: setMenu.Price.split('/').map(function(price) {
-                                    return price.replace('€', '').trim();
-                                }),
-                                contents: setMenu.Meals.map(function(content) {
-                                    return {
-                                        name: content.Name,
-                                        diets: content.Diets
-                                    };
-                                })
-                            };
-                        })
-                    }
-                ]
-            }
-        ];
-        
-        callback(restaurants);
+        try {
+            var data = JSON.parse(result);
+            
+            var restaurants = [
+                {
+                    name: 'Reaktori',
+                    menus: [
+                        {
+                            name: 'Lounas',
+                            meals: data.LunchMenu.SetMenus.map(function(setMenu) {
+                                return {
+                                    name: setMenu.Name,
+                                    prices: setMenu.Price.split('/').map(function(price) {
+                                        return price.replace('€', '').trim();
+                                    }),
+                                    contents: setMenu.Meals.map(function(content) {
+                                        return {
+                                            name: content.Name,
+                                            diets: content.Diets
+                                        };
+                                    })
+                                };
+                            })
+                        }
+                    ]
+                }
+            ];
+            
+            callback(null, restaurants);
+        } catch (e) {
+            callback(e);
+        }
     });
     
     req.on('error', function(err) {

@@ -31,17 +31,38 @@ app.get('/:date', function(req, res, next) {
         
     async.parallel([
         function(callback) {
-            juvenes.getMenus(date, function(menus) {
+            juvenes.getMenus(date, function(err, menus) {
+                if (err) {
+                    console.log(err);
+                    
+                    callback(null, []);
+                    return;
+                }
+                
                 callback(null, menus);
             });
         },
         function(callback) {
-            sodexo.getMenus(date, function(menus) {
+            sodexo.getMenus(date, function(err, menus) {
+                if (err) {
+                    console.log(err);
+                    
+                    callback(null, []);
+                    return;
+                }
+                
                 callback(null, menus);
             });
         },
         function(callback) {
-            fazer.getMenus(date, function(menus) {
+            fazer.getMenus(date, function(err, menus) {
+                if (err) {
+                    console.log(err);
+                    
+                    callback(null, []);
+                    return;
+                }
+                
                 callback(null, menus);
             });
         }

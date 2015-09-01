@@ -135,32 +135,36 @@ exports.getMenus = function(date, callback) {
         });
     }, function(err) {
         if (err) {
-            console.error(err);
+            callback(err);
             return;
         }
         
-        menus = menus.map(function(menu) {
-            return normalizeMenu(menu);
-        });
-        
-        var obj = {};
-        menus.forEach(function(menu) {
-            if (!obj[menu.restaurant]) {
-                obj[menu.restaurant] = {};
-                obj[menu.restaurant].menus = [];
-            }
+        try {
+            menus = menus.map(function(menu) {
+                return normalizeMenu(menu);
+            });
             
-            obj[menu.restaurant].menus.push(menu);
-        });
-        
-        var restaurantList = Object.keys(obj).map(function(restaurantName) {
-            return {
-                name: restaurantName,
-                menus: obj[restaurantName].menus
-            };
-        });
-        
-        callback(restaurantList);
+            var obj = {};
+            menus.forEach(function(menu) {
+                if (!obj[menu.restaurant]) {
+                    obj[menu.restaurant] = {};
+                    obj[menu.restaurant].menus = [];
+                }
+                
+                obj[menu.restaurant].menus.push(menu);
+            });
+            
+            var restaurantList = Object.keys(obj).map(function(restaurantName) {
+                return {
+                    name: restaurantName,
+                    menus: obj[restaurantName].menus
+                };
+            });
+            
+            callback(null, restaurantList);
+        } catch(e) {
+            callback(e);
+        }
     });
 };
 
