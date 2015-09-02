@@ -18,10 +18,14 @@ var restaurants = [
     {
         KitchenId: '60038',
         MenuTypeId: '3'
+    },
+    {
+        KitchenId: '60038',
+        MenuTypeId: '80'
     }
 ];
 
-var baseUrl = 'http://www.juvenes.fi/DesktopModules/Talents.LunchMenu/LunchMenuServices.asmx/GetMenuByWeekday?',
+var baseUrl = 'http://www.juvenes.fi/DesktopModules/Talents.LunchMenu/LunchMenuServices.asmx/GetMenuByDate?',
     infoUrl = 'http://www.juvenes.fi/DesktopModules/Talents.LunchMenu/LunchMenuServices.asmx/GetKitchenInfo?';
     
 exports.getOpeningHours = function(callback) {
@@ -87,21 +91,13 @@ exports.getOpeningHours = function(callback) {
 };
 
 exports.getMenus = function(date, callback) {
-    var week = date.week(),
-        day = date.day();
-        
-    if (day === 0) {
-        day = 7;
-    }
-        
     var menus = [];
     
     async.each(restaurants, function(restaurant, done) {
         var options = {
             KitchenId: restaurant.KitchenId,
             MenuTypeId: restaurant.MenuTypeId,
-            Week: week,
-            Weekday: day,
+            Date: "'" + date.format('YYYY-MM-DD') + "'",
             lang: "'fi'",
             format: 'json'
         };
