@@ -32,20 +32,24 @@ exports.getMenus = function(date, callback) {
                     menus: [
                         {
                             name: 'Lounas',
-                            meals: data.LunchMenu.SetMenus.map(function(setMenu) {
-                                return {
-                                    name: setMenu.Name,
-                                    prices: setMenu.Price.split('/').map(function(price) {
-                                        return price.replace('€', '').trim();
-                                    }),
-                                    contents: setMenu.Meals.map(function(content) {
-                                        return {
-                                            name: content.Name,
-                                            diets: content.Diets
-                                        };
-                                    })
-                                };
-                            })
+                            meals: data.LunchMenu.SetMenus
+                                .filter(function(setMenu) {
+                                    return setMenu.name !== null;
+                                })
+                                .map(function(setMenu) {
+                                    return {
+                                        name: setMenu.Name,
+                                        prices: setMenu.Price.split('/').map(function(price) {
+                                            return price.replace('€', '').trim();
+                                        }),
+                                        contents: setMenu.Meals.map(function(content) {
+                                            return {
+                                                name: content.Name,
+                                                diets: content.Diets
+                                            };
+                                        })
+                                    };
+                                })
                         }
                     ]
                 }
