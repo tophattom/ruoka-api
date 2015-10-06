@@ -34,7 +34,7 @@ exports.getMenus = function(date, callback) {
                             name: 'Lounas',
                             meals: data.LunchMenu.SetMenus
                                 .filter(function(setMenu) {
-                                    return setMenu.name !== null;
+                                    return setMenu.Name !== null;
                                 })
                                 .map(function(setMenu) {
                                     return {
