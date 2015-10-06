@@ -72,6 +72,6 @@ exports.getMenus = function(date, callback) {
     });
     
     req.on('error', function(err) {
-        callback(e);
+        callback(err);
     });
 };

@@ -58,6 +58,6 @@ exports.getMenus = function(date, callback) {
     });
     
     req.on('error', function(err) {
-        console.error(err);
+        callback(err);
     });
 };
