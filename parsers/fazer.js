@@ -1,15 +1,15 @@
 var http = require('http'),
     moment = require('moment-timezone');
 
-var baseUrl = 'http://www.amica.fi/api/restaurant/menu/day?';
+var baseUrl = 'http://www.amica.fi/modules/json/json/Index?';
     
 exports.getMenus = function(date, callback) {
     var options = {
-        date: date.format('YYYY-MM-DD'),
-        language: 'fi',
-        restaurantPageId: 69171
+        costNumber: '0812',
+        firstDay: date.format('YYYY-MM-DD'),
+        language: 'fi'
     };
-    
+        
     var queryString = Object.keys(options).map(function(key) {
         return key + '=' + options[key];
     }).join('&');
@@ -25,14 +25,14 @@ exports.getMenus = function(date, callback) {
     req.on('close', function() {
         try {
             var data = JSON.parse(result);
-            
+                        
             var restaurants = [
                 {
                     name: 'Reaktori',
                     menus: [
                         {
                             name: 'Lounas',
-                            meals: data.LunchMenu.SetMenus
+                            meals: data.MenusForDays[0].SetMenus
                                 .filter(function(setMenu) {
                                     return setMenu.Name !== null;
                                 })
@@ -42,10 +42,13 @@ exports.getMenus = function(date, callback) {
                                         prices: setMenu.Price.split('/').map(function(price) {
                                             return price.replace('€', '').trim();
                                         }),
-                                        contents: setMenu.Meals.map(function(content) {
+                                        contents: setMenu.Components.map(function(component) {
+                                            var parts = component.split('(');
                                             return {
-                                                name: content.Name,
-                                                diets: content.Diets
+                                                name: parts[0].trim(),
+                                                diets: parts[1].slice(0, -1).split(',').map(function(diet) {
+                                                    return diet.trim();
+                                                })
                                             };
                                         })
                                     };
