@@ -46,6 +46,7 @@ GET http://api.ruoka.xyz/YYYY-MM-DD
             ]
         },
         ...
-    ]
+    ],
+    "availableDiets": ["G", "VL", ...]
 }
 ````
