@@ -74,8 +74,36 @@ app.get('/:date', function(req, res, next) {
             return (a.restaurant + a.name) < (b.restaurant + b.name) ? -1 : 1;
         });
         
+        var allDiets = restaurants
+            .map(function(restaurant) {
+                return restaurant.menus.map(function(menu) {
+                    return menu.meals.map(function(meal) {
+                        return meal.contents.map(function(content) {
+                            return content.diets || [];
+                        }).reduce(function(prev, current) {
+                            return prev.concat(current);
+                        }, []);
+                    }).reduce(function(prev, current) {
+                        return prev.concat(current);
+                    }, []);
+                }).reduce(function(prev, current) {
+                    return prev.concat(current);
+                }, []);
+            })
+            .reduce(function(prev, current) {
+                return prev.concat(current);
+            }, [])
+            .filter(function(diet, index, self) {
+                return self.indexOf(diet) === index;
+            })
+            .filter(function(diet) {
+                return diet !== '';
+            })
+            .sort();
+        
         res.status(200).send({
-            restaurants: restaurants
+            restaurants: restaurants,
+            availableDiets: allDiets
         });
     });
 });
