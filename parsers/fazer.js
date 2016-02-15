@@ -29,6 +29,7 @@ exports.getMenus = function(date, callback) {
             var restaurants = [
                 {
                     name: 'Reaktori',
+                    url: data.RestaurantUrl,
                     menus: [
                         {
                             name: 'Lounas',

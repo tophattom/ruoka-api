@@ -60,6 +60,7 @@ exports.getMenus = function(date, callback) {
             var restaurantList = Object.keys(obj).map(function(restaurantName) {
                 return {
                     name: restaurantName,
+                    url: data.meta.ref_url,
                     menus: obj[restaurantName].menus
                 };
             });
