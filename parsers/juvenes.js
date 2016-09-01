@@ -9,10 +9,6 @@ var restaurants = [
     },
     {
         KitchenId: '6',
-        MenuTypeId: '77'
-    },
-    {
-        KitchenId: '60038',
         MenuTypeId: '74'
     },
     {
@@ -21,7 +17,7 @@ var restaurants = [
     },
     {
         KitchenId: '60038',
-        MenuTypeId: '80'
+        MenuTypeId: '77'
     }
 ];
 
