@@ -15,8 +15,12 @@ var http = require('http'),
 var app = express();
 
 var sentryEnabled = typeof config.sentry !== 'undefined' && config.sentry.enabled;
+var ravenClient;
 
 if (sentryEnabled) {
+    ravenClient = new raven.Client(config.sentry.dsn);
+    ravenClient.pathcGlobal();
+
     app.use(raven.middleware.express.requestHandler(config.sentry.dsn));
 }
 
@@ -41,7 +45,11 @@ app.get('/:date', function(req, res, next) {
         function(callback) {
             juvenes.getMenus(date, function(err, menus) {
                 if (err) {
-                    console.log(err);
+                    if (sentryEnabled) {
+                        ravenClient.captureException(err);
+                    } else {
+                        console.log(err);    
+                    }
                     
                     callback(null, []);
                     return;
@@ -53,7 +61,11 @@ app.get('/:date', function(req, res, next) {
         function(callback) {
             sodexo.getMenus(date, function(err, menus) {
                 if (err) {
-                    console.log(err);
+                    if (sentryEnabled) {
+                        ravenClient.captureException(err);
+                    } else {
+                        console.log(err);    
+                    }
                     
                     callback(null, []);
                     return;
@@ -65,7 +77,11 @@ app.get('/:date', function(req, res, next) {
         function(callback) {
             fazer.getMenus(date, function(err, menus) {
                 if (err) {
-                    console.log(err);
+                    if (sentryEnabled) {
+                        ravenClient.captureException(err);
+                    } else {
+                        console.log(err);    
+                    }
                     
                     callback(null, []);
                     return;
