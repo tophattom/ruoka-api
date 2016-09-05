@@ -2,6 +2,8 @@ var http = require('http'),
     moment = require('moment-timezone'),
     express = require('express'),
     async = require('async'),
+
+    raven = require('raven'),
     
     juvenes = require('./parsers/juvenes.js'),
     sodexo = require('./parsers/sodexo.js'),
@@ -11,6 +13,12 @@ var http = require('http'),
 
 
 var app = express();
+
+var ravenEnabled = typeof config.raven !== 'undefined' && config.raven.enabled;
+
+if (ravenEnabled) {
+    app.use(raven.middleware.express.requestHandler(config.raven.dsn));
+}
 
 app.use(function(req, res, next) {
     res.set({
@@ -107,6 +115,10 @@ app.get('/:date', function(req, res, next) {
         });
     });
 });
+
+if (ravenEnabled) {
+    app.use(raven.middleware.express.errorHandler(config.raven.dsn));
+}
 
 app.listen(config.app.port);
 console.log('Server listening on port', config.app.port);
