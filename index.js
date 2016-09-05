@@ -19,7 +19,7 @@ var ravenClient;
 
 if (sentryEnabled) {
     ravenClient = new raven.Client(config.sentry.dsn);
-    ravenClient.pathcGlobal();
+    ravenClient.patchGlobal();
 
     app.use(raven.middleware.express.requestHandler(config.sentry.dsn));
 }
