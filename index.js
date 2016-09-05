@@ -14,10 +14,10 @@ var http = require('http'),
 
 var app = express();
 
-var ravenEnabled = typeof config.raven !== 'undefined' && config.raven.enabled;
+var sentryEnabled = typeof config.sentry !== 'undefined' && config.sentry.enabled;
 
-if (ravenEnabled) {
-    app.use(raven.middleware.express.requestHandler(config.raven.dsn));
+if (sentryEnabled) {
+    app.use(raven.middleware.express.requestHandler(config.sentry.dsn));
 }
 
 app.use(function(req, res, next) {
@@ -116,8 +116,8 @@ app.get('/:date', function(req, res, next) {
     });
 });
 
-if (ravenEnabled) {
-    app.use(raven.middleware.express.errorHandler(config.raven.dsn));
+if (sentryEnabled) {
+    app.use(raven.middleware.express.errorHandler(config.sentry.dsn));
 }
 
 app.listen(config.app.port);
