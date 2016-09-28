@@ -5,6 +5,11 @@ var restaurantIds = {
     tay: 92
 };
 
+var restaurantNames = {
+    tty: 'Hertsi',
+    tay: 'Linna'
+};
+
 var baseUrl = 'http://www.sodexo.fi/ruokalistat/output/daily_json/';
 
 exports.getMenus = function(date, campus, callback) {
@@ -25,7 +30,7 @@ exports.getMenus = function(date, campus, callback) {
             
             var menus = [
                 {
-                    restaurant: 'Hertsi',
+                    restaurant: restaurantNames[campus],
                     name: 'Lounas',
                     meals: data.courses.map(function(course) {
                         return {
