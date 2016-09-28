@@ -2,24 +2,61 @@ var http = require('http'),
     async = require('async'),
     entities = new (require('html-entities').AllHtmlEntities)();
 
-var restaurants = [
-    {
-        KitchenId: '6',
-        MenuTypeId: '60'
-    },
-    {
-        KitchenId: '6',
-        MenuTypeId: '74'
-    },
-    {
-        KitchenId: '60038',
-        MenuTypeId: '3'
-    },
-    {
-        KitchenId: '60038',
-        MenuTypeId: '77'
-    }
-];
+var restaurants = {
+    tty: [
+        {
+            KitchenId: '6',
+            MenuTypeId: '60'
+        },
+        {
+            KitchenId: '6',
+            MenuTypeId: '74'
+        },
+        {
+            KitchenId: '60038',
+            MenuTypeId: '3'
+        },
+        {
+            KitchenId: '60038',
+            MenuTypeId: '77'
+        }
+    ],
+
+    tay: [
+        {
+            KitchenId: '13',
+            MenuTypeId: '60'
+        },
+        {
+            KitchenId: '13',
+            MenuTypeId: '74'
+        },
+        {
+            KitchenId: '13',
+            MenuTypeId: '3'
+        },
+        {
+            KitchenId: '13',
+            MenuTypeId: '5'
+        },
+        {
+            KitchenId: '13',
+            MenuTypeId: '52'
+        },
+        {
+            KitchenId: '130016',
+            MenuTypeId: '60'
+        },
+        {
+            KitchenId: '130018',
+            MenuTypeId: '58'
+        },
+        {
+            KitchenId: '130019',
+            MenuTypeId: '23'
+        }
+    ]
+};
 
 var priceGroups = [
     {
@@ -109,10 +146,10 @@ exports.getOpeningHours = function(callback) {
     });
 };
 
-exports.getMenus = function(date, callback) {
+exports.getMenus = function(date, campus, callback) {
     var menus = [];
     
-    async.each(restaurants, function(restaurant, done) {
+    async.each(restaurants[campus], function(restaurant, done) {
         var options = {
             KitchenId: restaurant.KitchenId,
             MenuTypeId: restaurant.MenuTypeId,

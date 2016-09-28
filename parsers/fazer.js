@@ -1,11 +1,16 @@
 var http = require('http'),
     moment = require('moment-timezone');
 
+var restaurantIds = {
+    tty: '0812',
+    tay: '0815'
+};
+
 var baseUrl = 'http://www.amica.fi/modules/json/json/Index?';
     
-exports.getMenus = function(date, callback) {
+exports.getMenus = function(date, campus, callback) {
     var options = {
-        costNumber: '0812',
+        costNumber: restaurantIds[campus],
         firstDay: date.format('YYYY-MM-DD'),
         language: 'fi'
     };
@@ -28,7 +33,7 @@ exports.getMenus = function(date, callback) {
                         
             var restaurants = [
                 {
-                    name: 'Reaktori',
+                    name: data.RestaurantName,
                     url: data.RestaurantUrl,
                     menus: [
                         {
@@ -37,23 +42,7 @@ exports.getMenus = function(date, callback) {
                                 .filter(function(setMenu) {
                                     return setMenu.Name !== null;
                                 })
-                                .map(function(setMenu) {
-                                    return {
-                                        name: setMenu.Name,
-                                        prices: setMenu.Price.split('/').map(function(price) {
-                                            return price.replace('€', '').trim();
-                                        }),
-                                        contents: setMenu.Components.map(function(component) {
-                                            var parts = component.split('(');
-                                            return {
-                                                name: parts[0].trim(),
-                                                diets: parts[1].slice(0, -1).split(',').map(function(diet) {
-                                                    return diet.trim();
-                                                })
-                                            };
-                                        })
-                                    };
-                                })
+                                .map(normalizeMenu)
                         }
                     ]
                 }
@@ -69,3 +58,43 @@ exports.getMenus = function(date, callback) {
         callback(err);
     });
 };
+
+function normalizeMenu(setMenu) {
+    var name = parseName(setMenu);
+    var prices = parsePrices(setMenu);
+
+    return {
+        name: name,
+        prices: prices,
+        contents: setMenu.Components.map(function(component) {
+            var parts = component.split('(');
+            return {
+                name: parts[0].trim(),
+                diets: parts[1].slice(0, -1).split(',').map(function(diet) {
+                    return diet.trim();
+                })
+            };
+        })
+    };   
+}
+
+function parsePrices(menu) {
+    var priceExp = /(\d+,\d+)/g;
+
+    if (menu.Price !== null) {
+        return menu.Price.split('/').map(function(price) {
+            return price.replace('€', '').trim();
+        })
+    } else {
+        var priceMatch = menu.Name.match(priceExp);
+
+        return priceMatch;
+    }
+}
+
+function parseName(menu) {
+    var nameExp = /([a-zA-ZäÄöÖ]+)\s+\d+(?:.+\/.+)?/;
+    var nameMatch = menu.Name.match(nameExp);
+
+    return nameMatch !== null ? nameMatch[1] : menu.Name;
+}

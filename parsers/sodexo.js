@@ -1,12 +1,17 @@
 var http = require('http');
 
-var baseUrl = 'http://www.sodexo.fi/ruokalistat/output/daily_json/12812/';
+var restaurantIds = {
+    tty: 12812,
+    tay: 92
+};
 
-exports.getMenus = function(date, callback) {
-    var urlDate = date.format('YYYY/MM/DD'),
-        requestUrl = baseUrl + urlDate + '/fi',
+var baseUrl = 'http://www.sodexo.fi/ruokalistat/output/daily_json/';
+
+exports.getMenus = function(date, campus, callback) {
+    var urlDate = date.format('YYYY/MM/DD');
+    var requestUrl = baseUrl + restaurantIds[campus] + '/' + urlDate + '/fi';
         
-        result = '';
+    var result = '';
         
     var req = http.get(requestUrl, function(res) {
         res.on('data', function(data) {
