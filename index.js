@@ -38,12 +38,13 @@ app.use(function(req, res, next) {
     }
 });
 
-app.get('/:date', function(req, res, next) {
-    var date = moment(req.params.date, 'YYYY-MM-DD').tz('Europe/Helsinki');
+app.get('/:date/:lang', function(req, res, next) {
+    var date = moment(req.params.date, 'YYYY-MM-DD').tz('Europe/Helsinki'),
+        lang = req.params.lang;
         
     async.parallel([
         function(callback) {
-            juvenes.getMenus(date, function(err, menus) {
+            juvenes.getMenus(date, lang, function(err, menus) {
                 if (err) {
                     if (sentryEnabled) {
                         ravenClient.captureException(err);
@@ -59,7 +60,7 @@ app.get('/:date', function(req, res, next) {
             });
         },
         function(callback) {
-            sodexo.getMenus(date, function(err, menus) {
+            sodexo.getMenus(date, lang, function(err, menus) {
                 if (err) {
                     if (sentryEnabled) {
                         ravenClient.captureException(err);
@@ -75,7 +76,7 @@ app.get('/:date', function(req, res, next) {
             });
         },
         function(callback) {
-            fazer.getMenus(date, function(err, menus) {
+            fazer.getMenus(date, lang, function(err, menus) {
                 if (err) {
                     if (sentryEnabled) {
                         ravenClient.captureException(err);

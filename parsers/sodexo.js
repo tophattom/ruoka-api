@@ -2,7 +2,7 @@ var http = require('http');
 
 var baseUrl = 'http://www.sodexo.fi/ruokalistat/output/daily_json/12812/';
 
-exports.getMenus = function(date, callback) {
+exports.getMenus = function(date, lang, callback) {
     var urlDate = date.format('YYYY/MM/DD'),
         requestUrl = baseUrl + urlDate + '/fi',
         
@@ -16,7 +16,9 @@ exports.getMenus = function(date, callback) {
     
     req.on('close', function() {
         try {
-            var data = JSON.parse(result);
+            var data = JSON.parse(result),
+                title = "title_" + lang,
+                desc = "desc_" + lang;
             
             var menus = [
                 {
@@ -30,14 +32,14 @@ exports.getMenus = function(date, callback) {
                             }),
                             contents: [
                                 {
-                                    name: course.title_fi,
+                                    name: course[title],
                                     diets: typeof course.properties !== 'undefined' ? 
                                         course.properties.split(',').map(function(diet) {
                                             return diet.trim();
                                         }) : []
                                 },
                                 {
-                                    name: course.desc_fi
+                                    name: course[desc]
                                 }
                             ].filter(function(content) {
                                 return content.name !== '';

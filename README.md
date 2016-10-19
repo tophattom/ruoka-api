@@ -2,7 +2,8 @@
 
 
 ````
-GET http://api.ruoka.xyz/YYYY-MM-DD
+GET http://api.ruoka.xyz/YYYY-MM-DD/fi
+    http://api.ruoka.xyz/YYYY-MM-DD/en
 ````
 
 ```` json

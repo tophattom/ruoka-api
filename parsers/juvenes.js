@@ -109,7 +109,7 @@ exports.getOpeningHours = function(callback) {
     });
 };
 
-exports.getMenus = function(date, callback) {
+exports.getMenus = function(date, lang, callback) {
     var menus = [];
     
     async.each(restaurants, function(restaurant, done) {
@@ -117,7 +117,7 @@ exports.getMenus = function(date, callback) {
             KitchenId: restaurant.KitchenId,
             MenuTypeId: restaurant.MenuTypeId,
             Date: "'" + date.format('YYYY-MM-DD') + "'",
-            lang: "'fi'",
+            lang: "'" + lang + "'",
             format: 'json'
         };
         

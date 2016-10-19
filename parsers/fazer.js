@@ -3,11 +3,11 @@ var http = require('http'),
 
 var baseUrl = 'http://www.amica.fi/modules/json/json/Index?';
     
-exports.getMenus = function(date, callback) {
+exports.getMenus = function(date, lang, callback) {
     var options = {
         costNumber: '0812',
         firstDay: date.format('YYYY-MM-DD'),
-        language: 'fi'
+        language: lang
     };
         
     var queryString = Object.keys(options).map(function(key) {
