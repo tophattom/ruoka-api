@@ -38,9 +38,9 @@ app.use(function(req, res, next) {
     }
 });
 
-app.get('/:date/:lang', function(req, res, next) {
+app.get(['/:date', '/:date/:lang'], function(req, res, next) {
     var date = moment(req.params.date, 'YYYY-MM-DD').tz('Europe/Helsinki'),
-        lang = req.params.lang;
+        lang = req.params.lang || 'fi';
         
     async.parallel([
         function(callback) {
