@@ -42,54 +42,9 @@ app.get('/:date', function(req, res, next) {
   var date = moment(req.params.date, 'YYYY-MM-DD').tz('Europe/Helsinki');
 
   async.parallel([
-    function(callback) {
-      juvenes.getMenus(date, function(err, menus) {
-        if (err) {
-          if (sentryEnabled) {
-            ravenClient.captureException(err);
-          } else {
-            console.log(err);
-          }
-
-          callback(null, []);
-          return;
-        }
-
-        callback(null, menus);
-      });
-    },
-    function(callback) {
-      sodexo.getMenus(date, function(err, menus) {
-        if (err) {
-          if (sentryEnabled) {
-            ravenClient.captureException(err);
-          } else {
-            console.log(err);
-          }
-
-          callback(null, []);
-          return;
-        }
-
-        callback(null, menus);
-      });
-    },
-    function(callback) {
-      fazer.getMenus(date, function(err, menus) {
-        if (err) {
-          if (sentryEnabled) {
-            ravenClient.captureException(err);
-          } else {
-            console.log(err);
-          }
-
-          callback(null, []);
-          return;
-        }
-
-        callback(null, menus);
-      });
-    }
+    menuRetriever(juvenes, date),
+    menuRetriever(sodexo, date),
+    menuRetriever(fazer, date)
   ], function(err, result) {
     var restaurants = result.reduce(function(prev, current) {
         return prev.concat(current);
@@ -138,3 +93,22 @@ if (sentryEnabled) {
 
 app.listen(config.app.port);
 console.log('Server listening on port', config.app.port);
+
+function menuRetriever(service, date) {
+  return function(callback) {
+    service.getMenus(date, function(err, menus) {
+      if (err) {
+        if (sentryEnabled) {
+          ravenClient.captureException(err);
+        } else {
+          console.log(err);
+        }
+
+        callback(null, []);
+        return;
+      }
+
+      callback(null, menus);
+    });
+  };
+}
