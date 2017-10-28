@@ -1,6 +1,7 @@
 var http = require('http'),
-async = require('async'),
-entities = new (require('html-entities').AllHtmlEntities)();
+  async = require('async'),
+  entities = new (require('html-entities').AllHtmlEntities)(),
+  parseString = require('xml2js').parseString;
 
 var restaurants = [
   {
@@ -116,9 +117,8 @@ exports.getMenus = function(date, callback) {
     var options = {
       KitchenId: restaurant.KitchenId,
       MenuTypeId: restaurant.MenuTypeId,
-      Date: "'" + date.format('YYYY-MM-DD') + "'",
-      lang: "'fi'",
-      format: 'json'
+      Date: date.format('YYYY-MM-DD'),
+      lang: 'fi'
     };
 
     var queryString = Object.keys(options).map(function(key) {
@@ -134,15 +134,11 @@ exports.getMenus = function(date, callback) {
     });
 
     req.on('close', function() {
-      result = result.slice(1).slice(0, -2);
-
-      var resultObj = JSON.parse(result);
-      if (resultObj.d) {
-        var menu = JSON.parse(resultObj.d);
+      parseString(result, function(err, obj) {
+        var menu = JSON.parse(obj.string._);
         menus.push(menu);
-      }
-
-      done();
+        done();
+      });
     });
 
     req.on('error', function(err) {
@@ -155,7 +151,9 @@ exports.getMenus = function(date, callback) {
     }
 
     try {
-      menus = menus.map(function(menu) {
+      menus = menus.filter(function(menu) {
+        return menu.MenuTypeName !== '[CLOSED]';
+      }).map(function(menu) {
         return normalizeMenu(menu);
       });
 
