@@ -1,6 +1,6 @@
-var http = require('http');
+var https = require('https');
 
-var baseUrl = 'http://www.sodexo.fi/ruokalistat/output/daily_json/12812/';
+var baseUrl = 'https://www.sodexo.fi/ruokalistat/output/daily_json/12812/';
 
 exports.getMenus = function(date, callback) {
   var urlDate = date.format('YYYY/MM/DD'),
@@ -8,7 +8,7 @@ exports.getMenus = function(date, callback) {
 
   result = '';
 
-  var req = http.get(requestUrl, function(res) {
+  var req = https.get(requestUrl, function(res) {
     res.on('data', function(data) {
       result += data.toString();
     });

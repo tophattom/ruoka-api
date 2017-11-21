@@ -1,7 +1,7 @@
-var http = require('http'),
+var https = require('https'),
     moment = require('moment-timezone');
 
-var baseUrl = 'http://www.amica.fi/modules/json/json/Index?';
+var baseUrl = 'https://www.amica.fi/modules/json/json/Index?';
 
 exports.getMenus = function(date, callback) {
   var options = {
@@ -16,7 +16,7 @@ exports.getMenus = function(date, callback) {
 
   var result = '';
 
-  var req = http.get(baseUrl + queryString, function(res) {
+  var req = https.get(baseUrl + queryString, function(res) {
     res.on('data', function(data) {
       result += data.toString();
     });
