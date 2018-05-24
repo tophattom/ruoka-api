@@ -26,7 +26,7 @@ if (sentryEnabled) {
 
 app.use(function(req, res, next) {
   res.set({
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'https://ruoka.xyz',
     'Access-Control-Allow-Methods': 'GET'
   });
 
