@@ -17,15 +17,18 @@ exports.getMenus = function(date, callback) {
   req.on('close', function() {
     try {
       var data = JSON.parse(result);
+      console.log(data);
 
       var menus = [
       {
         restaurant: 'Hertsi',
         name: 'Lounas',
         meals: data.courses.map(function(course) {
+          var prices = typeof course.price !== 'undefined' ? course.price.split('/') : [];
+
           return {
             name: course.category,
-            prices: course.price.split('/').map(function(price) {
+            prices: prices.map(function(price) {
               return price.trim();
             }),
             contents: [
