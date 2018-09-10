@@ -17,7 +17,6 @@ exports.getMenus = function(date, callback) {
   req.on('close', function() {
     try {
       var data = JSON.parse(result);
-      console.log(data);
 
       var menus = [
       {

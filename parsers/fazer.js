@@ -1,7 +1,7 @@
 var https = require('https'),
     moment = require('moment-timezone');
 
-var baseUrl = 'https://www.amica.fi/modules/json/json/Index?';
+var baseUrl = 'https://www.fazerfoodco.fi/modules/json/json/Index?';
 
 exports.getMenus = function(date, callback) {
   var options = {
