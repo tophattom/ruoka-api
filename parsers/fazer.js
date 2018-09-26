@@ -40,7 +40,7 @@ exports.getMenus = function(date, callback) {
                 .map(function(setMenu) {
                   return {
                     name: setMenu.Name,
-                    prices: setMenu.Price.split('/').map(function(price) {
+                    prices: setMenu.Price === null ? [] : setMenu.Price.split('/').map(function(price) {
                       return price.replace('€', '').trim();
                     }),
                     contents: setMenu.Components.map(function(component) {
