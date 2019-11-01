@@ -13,6 +13,10 @@ var restaurants = [
     MenuTypeId: '74'
   },
   {
+    KitchenId: '6',
+    MenuTypeId: '86'
+  },
+  {
     KitchenId: '60038',
     MenuTypeId: '3'
   },
