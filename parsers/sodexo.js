@@ -1,10 +1,10 @@
 var https = require('https');
 
-var baseUrl = 'https://www.sodexo.fi/ruokalistat/output/daily_json/12812/';
+var baseUrl = 'https://www.sodexo.fi/ruokalistat/output/daily_json/111/';
 
 exports.getMenus = function(date, callback) {
-  var urlDate = date.format('YYYY/MM/DD'),
-  requestUrl = baseUrl + urlDate + '/fi',
+  var urlDate = date.format('YYYY-MM-DD'),
+  requestUrl = baseUrl + urlDate,
 
   result = '';
 
@@ -22,7 +22,8 @@ exports.getMenus = function(date, callback) {
       {
         restaurant: 'Hertsi',
         name: 'Lounas',
-        meals: data.courses.map(function(course) {
+        meals: Object.keys(data.courses).map(function(key) {
+          var course = data.courses[key];
           var prices = typeof course.price !== 'undefined' ? course.price.split('/') : [];
 
           return {
