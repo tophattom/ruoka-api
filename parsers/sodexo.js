@@ -32,16 +32,13 @@ exports.getMenus = function(date, callback) {
               return price.trim();
             }),
             contents: [
-            {
-              name: course.title_fi,
-              diets: typeof course.properties !== 'undefined' ?
-              course.properties.split(',').map(function(diet) {
-                return diet.trim();
-              }) : []
-            },
-            {
-              name: course.desc_fi
-            }
+              {
+                name: course.title_fi,
+                diets: typeof course.properties !== 'undefined' ?
+                course.properties.split(',').map(function(diet) {
+                  return diet.trim();
+                }) : []
+              }
             ].filter(function(content) {
               return content.name !== '';
             })
