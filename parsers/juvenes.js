@@ -26,6 +26,29 @@ var restaurants = [
   }
 ];
 
+var priceGroups = [
+  {
+    groupId: 0,
+    prices: null
+  },
+  {
+    groupId: 1,
+    prices: ['2,60', '4,87', '9,90']
+  },
+  {
+    groupId: 8,
+    prices: ['4,00', '7,25', '9,90']
+  },
+  {
+    groupId: 3,
+    prices: ['2,10', '4,55', '8,50']
+  },
+  {
+    groupId: 4,
+    prices: ['4,95', '7,37', '10,20']
+  }
+];
+
 var baseUrl = 'http://www.juvenes.fi/DesktopModules/Talents.LunchMenu/LunchMenuServices.asmx/GetMenuByDate?',
     infoUrl = 'http://www.juvenes.fi/DesktopModules/Talents.LunchMenu/LunchMenuServices.asmx/GetKitchenInfo?';
 
@@ -167,9 +190,16 @@ function normalizeMenu(menu) {
     restaurant: menu.KitchenName,
     name: menu.MenuTypeName,
     meals: menu.MealOptions.map(function(mealOption) {
+      var prices = null;
+      priceGroups.forEach(function(priceGroup) {
+        if (priceGroup.groupId === mealOption.ExternalGroupId) {
+          prices = priceGroup.prices;
+        }
+      });
+
       return {
         name: mealOption.Name,
-        prices: null,
+        prices: prices,
         contents: mealOption.MenuItems
           .filter(function(item) {
             return item.Name !== '';
