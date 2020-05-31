@@ -17,6 +17,8 @@ var app = express();
 var sentryEnabled = typeof config.sentry !== 'undefined' && config.sentry.enabled;
 var ravenClient;
 
+const PORT = 8888;
+
 if (sentryEnabled) {
   ravenClient = new raven.Client(config.sentry.dsn);
   ravenClient.patchGlobal();
@@ -91,8 +93,8 @@ if (sentryEnabled) {
   app.use(raven.middleware.express.errorHandler(config.sentry.dsn));
 }
 
-app.listen(config.app.port);
-console.log('Server listening on port', config.app.port);
+app.listen(PORT);
+console.log('Server listening on port', PORT);
 
 function menuRetriever(service, date) {
   return function(callback) {

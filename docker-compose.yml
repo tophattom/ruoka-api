@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  ruoka-api:
+    build: .
+    restart: always
+    command: ["node", "index.js"]
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config.js:/usr/src/app/config.js
