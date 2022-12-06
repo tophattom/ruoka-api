@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "^1.4.2",
-    "express": "^4.13.3",
+    "express": "^4.17.3",
     "html-entities": "^1.1.3",
     "moment-timezone": "^0.4.0",
     "raven": "^0.12.1",
